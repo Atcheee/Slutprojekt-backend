@@ -1,10 +1,14 @@
-const AuthController = require("../controllers/AuthController");
-const UserController = require("../controllers/UserController");
+// const authController = require("../controllers/authController");
+const { Router } = require("express");
 const Auth = require("../middleware/auth");
 const Validations = require("../validations");
 
-const { Router } = require("express");
+const router = new Router();
 
-const router = new Rounter();
+// router.get("/") ;
 
-// router.get("/", Auth.user, asyncHandler(taskController.getTasks));
+router.get("/", (req, res) => {
+  res.send("jsuheglusheg")
+});
+
+module.exports = router;

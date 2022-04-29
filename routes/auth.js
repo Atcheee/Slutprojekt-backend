@@ -5,12 +5,12 @@ const Validations = require("../validations");
 
 const { Router } = require("express");
 
-const router = new Rounter();
+const router = new Router();
 
 router.post(
   "/register",
   Validations.register,
-  asyncHandler(authController.authenticate)
+  // asyncHandler(authController.authenticate)
 );
 
 // router.get("tasks/:id", Auth.user, asyncHandler(UserController.getOne));
