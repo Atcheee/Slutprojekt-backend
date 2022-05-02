@@ -1,20 +1,30 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 module.exports = {
+  async user(req, res, next) {
+    try {
+      const token = req.header("Authorization").replace("Bearer ", "");
+      const user = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = user;
+
+      next();
+    } catch (error) {
+      res.status(401).send({ error: "Unauthorized" });
+    }
+  },
   async admin(req, res, next) {
     try {
       const token = req.header("Authorization").replace("Bearer ", "");
       const user = jwt.verify(token, process.env.JWT_SECRET);
-
-      if (user.role != "Admin") {
-        throw new Forbidden();
+      req.user = user;
+      if (user.user_role != "Admin") {
+        res.status(401).send({ error: "You are not an Admin" });
       }
 
-      req.user = user;
-
       next();
-    } catch (err) {
-      res.status(401).send({ err: "Unauthorized" });
+    } catch (error) {
+      res.status(401).send({ error: "Unauthorized" });
     }
   },
 };

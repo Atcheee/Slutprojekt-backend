@@ -7,7 +7,7 @@ const {
 } = require("express-validator");
 
 const validator = (validators) => async (req, res, next) => {
-  for (let validering of validerings) {
+  for (let validering of validators) {
     const result = await validering.run(req);
     if (result.errors.length) break;
   }
@@ -19,9 +19,28 @@ const validator = (validators) => async (req, res, next) => {
 };
 
 module.exports = {
-  register: validator([
-    check("name").exists().withMessage("Name missing"),
-    check("email").exists().withMessage("Email missing"),
-    check("password").exists().withMessage("Password missing"),
+  login: validator([
+    check("email").exists().withMessage("Missing email"),
+    check("password").exists().withMessage("Missing password"),
+    check("role").exists().withMessage("Missing role"),
+  ]),
+  registerUser: validator([
+    check("user_name").exists().withMessage("Name missing"),
+    check("user_email").exists().withMessage("Email missing"),
+    check("user_password").exists().withMessage("Password missing"),
+  ]),
+  create_task: validator([
+    check("task_subject").exists().withMessage("Missing task name"),
+    check("task_content").exists().withMessage("Missing task description"),
+    check("task_status").exists().withMessage("Missing task status"),
+    check("task_images").exists().withMessage("Missing task image"),
+    check("customer_id").exists().withMessage("Missing client id"),
+    check("worker_id").exists().withMessage("Missing worker id"),
+  ]),
+  updateTask: validator([
+    check("taskStatus")
+      .exists()
+      .isIn(["pending", "in progress", "completed"])
+      .withMessage("Missing task status"),
   ]),
 };
