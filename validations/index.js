@@ -20,14 +20,15 @@ const validator = (validators) => async (req, res, next) => {
 
 module.exports = {
   login: validator([
-    check("email").exists().withMessage("Missing email"),
-    check("password").exists().withMessage("Missing password"),
-    check("role").exists().withMessage("Missing role"),
+    check("user_email").exists().withMessage("Missing email"),
+    check("user_password").exists().withMessage("Missing password"),
+    check("user_role").exists().withMessage("Missing role"),
   ]),
   registerUser: validator([
     check("user_name").exists().withMessage("Name missing"),
     check("user_email").exists().withMessage("Email missing"),
     check("user_password").exists().withMessage("Password missing"),
+    check("user_role").exists().withMessage("Role missing"),
   ]),
   create_task: validator([
     check("task_subject").exists().withMessage("Missing task name"),

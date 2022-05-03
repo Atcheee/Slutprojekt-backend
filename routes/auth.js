@@ -9,4 +9,6 @@ const router = new Router();
 
 router.post("/auth", Validations.login, asyncHandler(authController.authenticate));
 
+
+
 module.exports = router;

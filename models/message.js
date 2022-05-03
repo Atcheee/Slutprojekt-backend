@@ -1,14 +1,26 @@
 const db = require("../database/connection");
 const { DataTypes } = require("sequelize");
-const { InvalidUserCredentials, Unauthorized } = require("../errors");
 
 require("dotenv").config();
 
-const Message = db.define("Message", {
+const Messages = db.define("Messages", {
+  msg_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   msg: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  task_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-module.exports = Message;
+module.exports = Messages;

@@ -17,9 +17,9 @@ const Task = require("../models/task");
       user_role: "Worker",
     },
     {
-      user_name: "User",
-      user_email: "User@gmail.com",
-      user_password: "User",
+      user_name: "Customer",
+      user_email: "Customer@gmail.com",
+      user_password: "Customer",
     },
   ]);
 
@@ -47,9 +47,13 @@ const Task = require("../models/task");
   await Messages.bulkCreate([
     {
       msg: "random text random text random text random text ",
+      user_id: 5,
+      task_id: 3,
     },
     {
       msg: "bla bla bla bla bla bla ",
+      user_id: 4,
+      task_id: 2,
     },
   ]);
 })();
