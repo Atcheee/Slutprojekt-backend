@@ -51,7 +51,6 @@ module.exports = {
   get_messages: async (req, res) => {
     const { id } = req.params;
     const task = await Task.findByPk(id);
-    console.log(task);
 
     if (
       req.user.user_role == "Customer" &&
@@ -73,13 +72,10 @@ module.exports = {
     const msg = req.body.msg;
     const user_id = req.user.user_id;
 
-    if (
-      req.user.user_role == "Customer" &&
-      task.customer_id != req.user.user_id
-    ) {
+    if (req.user.user_role == "Customer" && task.user_id != req.user.user_id) {
       throw new Error("You don't have access to create a new msg here.");
     }
-    if (req.user.user_role == "Worker" && task.worker_id != req.user.user_id) {
+    if (req.user.user_role == "Worker" && task.user_id != req.user.user_id) {
       throw new Error("You don't have access to create a new msg here.");
     }
 

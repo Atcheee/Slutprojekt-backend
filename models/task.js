@@ -26,11 +26,7 @@ const Task = db.define("Task", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  customer_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  worker_id: {
+  user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
