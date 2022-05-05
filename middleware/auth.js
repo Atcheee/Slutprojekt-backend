@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 module.exports = {
@@ -6,6 +7,7 @@ module.exports = {
     try {
       const token = req.header("Authorization").replace("Bearer ", "");
       const user = jwt.verify(token, process.env.JWT_SECRET);
+      
       req.user = user;
 
       next();

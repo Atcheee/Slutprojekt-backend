@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require("bcryptjs");
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -31,7 +32,14 @@ module.exports = {
       throw new Error("You don't have access to see this page.");
     }
 
-    const user = await User.create(req.body);
+    const hash = bcrypt.hashSync(req.body.user_password, 10);
+
+    const user = await User.create({
+      user_name: req.body.user_name,
+      user_email: req.body.user_email,
+      user_password: hash,
+      user_role: req.body.user_role,
+    });
     res.json(user);
   },
   updateUser: async (req, res) => {

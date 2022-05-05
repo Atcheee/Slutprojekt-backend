@@ -3,12 +3,10 @@ const Messages = require("../models/message");
 
 module.exports = {
   get_tasks: async (req, res) => {
-    console.log(req.user.user_role);
     if (req.user.user_role == "Admin") {
       getTasks = await Task.findAll({});
     }
     if (req.user.user_role == "Worker") {
-      console.log(req.user.user_id);
       getTasks = await Task.findAll({
         where: { worker_id: req.user.user_id },
       });
@@ -73,17 +71,19 @@ module.exports = {
     const user_id = req.user.user_id;
 
     try {
-      if (req.user.user_role == "Customer" && task.user_id != req.user.user_id) {
+      if (
+        req.user.user_role == "Customer" &&
+        task.user_id != req.user.user_id
+      ) {
         throw new Error("You don't have access to create a new msg here.");
       }
       if (req.user.user_role === "Worker" || req.user.user_role === "Admin") {
         const message = await Messages.create({ msg, user_id, task_id: id });
         res.json("Message successfully created: " + message.msg);
-      } 
+      }
     } catch (error) {
       throw new Error("You don't have access to create a new msg here.");
     }
-    
   },
   update_taskStatus: async function (req, res) {
     const { id } = req.params;
@@ -125,7 +125,10 @@ module.exports = {
         res.json("No image was found");
       }
       if (image) {
-        await Task.update({task_images: null},{ where: { task_id: req.params.id } });
+        await Task.update(
+          { task_images: null },
+          { where: { task_id: req.params.id } }
+        );
         res.json("Image got deleted successfully.");
       }
     }
@@ -144,5 +147,5 @@ module.exports = {
         res.json("Message got deleted successfully.");
       }
     }
-  }
+  },
 };

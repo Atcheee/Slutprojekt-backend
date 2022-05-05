@@ -7,19 +7,19 @@ const Task = require("../models/task");
     {
       user_name: "Admin",
       user_email: "Admin@gmail.com",
-      user_password: "Admin",
+      user_password: "$2a$10$QlPVUv/Dw.uDSH4arcAXMukOOX3hcfLTxkmhD3blGJfoy6VA8wEKi",
       user_role: "Admin",
     },
     {
       user_name: "Worker",
       user_email: "Worker@gmail.com",
-      user_password: "Worker",
+      user_password: "$2a$10$LmAKWhMjRHz7/csohTMWWOfLVn/Rx9F55ju0pZopojW.wvSAvgfyO",
       user_role: "Worker",
     },
     {
       user_name: "Customer",
       user_email: "Customer@gmail.com",
-      user_password: "Customer",
+      user_password: "$2a$10$ePDSS35rt72w6i8L7EXFL.Zk/AArLWUy7Ggp2Go8jbivBDtnRy.02",
     },
   ]);
 
