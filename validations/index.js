@@ -33,10 +33,7 @@ module.exports = {
   create_task: validator([
     check("task_subject").exists().withMessage("Missing task name"),
     check("task_content").exists().withMessage("Missing task description"),
-    check("task_status").exists().withMessage("Missing task status"),
-    check("task_images").exists().withMessage("Missing task image"),
-    check("customer_id").exists().withMessage("Missing client id"),
-    check("worker_id").exists().withMessage("Missing worker id"),
+    check("user_id").exists().withMessage("Missing user_id"),
   ]),
   updateTask: validator([
     check("taskStatus")

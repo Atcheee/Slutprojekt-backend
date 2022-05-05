@@ -21,10 +21,11 @@ const Task = db.define("Task", {
   task_status: {
     type: DataTypes.STRING,
     allowNull: false,
+    enum: ["Pending", "Done"],
+    defaultValue: "Pending",
   },
   task_images: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   user_id: {
     type: DataTypes.INTEGER,

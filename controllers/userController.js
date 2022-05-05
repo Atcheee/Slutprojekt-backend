@@ -46,4 +46,19 @@ module.exports = {
     user.update(req.body);
     res.json(user);
   },
+  deleteUser: async (req, res) => {
+    if (!req.user.user_role == "Admin") {
+      throw new Error("Only admins can delete users.");
+    }
+    if (req.user.user_role === "Admin") {
+      const user = await User.findByPk(req.params.id);
+      if (!user) {
+        res.json("No user with this user_id was found");
+      }
+      if (user) {
+        await User.destroy({ where: { user_id: req.params.id } });
+        res.json("User got deleted successfully.");
+      }
+    }
+  },
 };

@@ -16,4 +16,6 @@ router.post("/", Auth.user, Validations.registerUser, asyncHandler(userControlle
 
 router.patch("/:id", Auth.user, asyncHandler(userController.updateUser));
 
+router.delete("/:id", Auth.admin, asyncHandler(userController.deleteUser));
+
 module.exports = router;
