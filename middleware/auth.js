@@ -7,12 +7,12 @@ module.exports = {
     try {
       const token = req.header("Authorization").replace("Bearer ", "");
       const user = jwt.verify(token, process.env.JWT_SECRET);
-      
+
       req.user = user;
 
       next();
     } catch (error) {
-      res.status(401).send({ error: "Unauthorized" });
+      res.status(401).send({ error: "Unauthorized token" });
     }
   },
   async admin(req, res, next) {
@@ -21,7 +21,7 @@ module.exports = {
       const user = jwt.verify(token, process.env.JWT_SECRET);
       req.user = user;
       if (user.user_role != "Admin") {
-        res.status(401).send({ error: "You are not an Admin" });
+        res.status(401).send({ error: "Unauthorized token" });
       }
 
       next();
