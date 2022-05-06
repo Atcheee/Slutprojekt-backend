@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const {Forbidden} = require("../error")
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -17,7 +18,7 @@ module.exports = {
     if (req.user.user_role == "Admin" || req.user.user_role == "Worker") {
       res.json(user);
     } else if (req.user.user_role === "Customer") {
-      throw new Error(
+      throw new Forbidden(
         "You don't have access to see this page, contact an Admin if you're supposed to have access to this page."
       );
     }
@@ -29,7 +30,7 @@ module.exports = {
   },
   registerUser: async (req, res) => {
     if (req.user.user_role !== "Admin") {
-      throw new Error("You don't have access to see this page.");
+      throw new Forbidden("You don't have access to see this page.");
     }
 
     const hash = bcrypt.hashSync(req.body.user_password, 10);
@@ -44,19 +45,19 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     if (req.user.user_role !== "Admin") {
-      throw new Error("You don't have clearance to update users.");
+      throw new Forbidden("You don't have clearance to update users.");
     }
 
     const user = await User.findByPk(req.params.id);
     if (user.user_role == "Admin") {
-      throw new Error("An Admin cannot be updated");
+  throw new Forbidden("An Admin cannot be updated");
     }
     user.update(req.body);
     res.json(user);
   },
   deleteUser: async (req, res) => {
     if (!req.user.user_role == "Admin") {
-      throw new Error("Only admins can delete users.");
+      throw new Forbidden("Only admins can delete users.");
     }
     if (req.user.user_role === "Admin") {
       const user = await User.findByPk(req.params.id);

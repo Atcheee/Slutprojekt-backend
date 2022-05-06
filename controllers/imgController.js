@@ -1,5 +1,6 @@
 const Task = require("../models/task");
 const path = require("path");
+const { Forbidden } = require("../error");
 
 module.exports = {
   getAllImages: (req, res) => {},
@@ -8,9 +9,7 @@ module.exports = {
     const task = await Task.findByPk(id);
 
     if (req.user.user_role == "Customer") {
-      throw new Error(
-        "Contact a worker and/or admin if you want an image to be uploaded."
-      );
+      throw new Forbidden();
     }
 
     if (req.user.user_role == "Admin" || req.user.user_role == "Worker") {

@@ -2,6 +2,7 @@ const db = require("../database/connection");
 const { DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { userNotFound, invalidUserCredentials } = require("../error");
 
 require("dotenv").config();
 
@@ -45,7 +46,7 @@ const User = db.define(
 User.authenticate = async (email, password) => {
   const user = await User.findOne({ where: { user_email: email } });
   if (!user) {
-    throw new Error("User not found!");
+    throw new userNotFound();
   }
   if (user) {
     if (bcrypt.compareSync(password, user.user_password)) {
@@ -58,7 +59,7 @@ User.authenticate = async (email, password) => {
       };
       return jwt.sign(payload, process.env.JWT_SECRET);
     } else {
-      throw new Error("Password isn't correct, try again!");
+      throw new invalidUserCredentials();
     }
   }
 };

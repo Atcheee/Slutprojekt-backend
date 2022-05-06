@@ -1,5 +1,6 @@
 const Task = require("../models/task");
 const Messages = require("../models/message");
+const {Forbidden} = require("../error")
 
 module.exports = {
   get_tasks: async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = {
   },
   create_task: async (req, res) => {
     if (req.user.user_role == "Customer") {
-      throw new Error("You don't have access to create a task.");
+      throw new Forbidden("You don't have access to create a task.")
     }
     if (req.user.user_role == "Admin" || req.user.user_role == "Worker") {
       const task = await Task.create(req.body);
@@ -35,7 +36,7 @@ module.exports = {
     const task = await Task.findByPk(id);
 
     if (req.user.user_role == "Customer") {
-      throw new Error("You don't have access to update a task");
+      throw new Forbidden("You don't have access to update a task");
     }
 
     await task.update(req.body, { where: { id } });
@@ -54,10 +55,10 @@ module.exports = {
       req.user.user_role == "Customer" &&
       task.customer_id != req.user.user_id
     ) {
-      throw new Error("You don't have access to view this page.");
+      throw new Forbidden("You don't have access to view this page.");
     }
     if (req.user.user_role == "Worker" && task.worker_id != req.user.user_id) {
-      throw new Error("You don't have access to view this page.");
+      throw new Forbidden("You don't have access to view this page.");
     }
     const messages = await Messages.findAll({ where: { task_id: id } });
     res.json(messages);
@@ -75,14 +76,14 @@ module.exports = {
         req.user.user_role == "Customer" &&
         task.user_id != req.user.user_id
       ) {
-        throw new Error("You don't have access to create a new msg here.");
+        throw new Forbidden("You don't have access to create a new msg here.");
       }
       if (req.user.user_role === "Worker" || req.user.user_role === "Admin") {
         const message = await Messages.create({ msg, user_id, task_id: id });
         res.json("Message successfully created: " + message.msg);
       }
     } catch (error) {
-      throw new Error("You don't have access to create a new msg here.");
+      throw new Forbidden("You don't have access to create a new msg here.");
     }
   },
   update_taskStatus: async function (req, res) {
@@ -90,7 +91,7 @@ module.exports = {
     const task = await Task.findByPk(id);
 
     if (req.user.user_role == "Customer") {
-      throw new Error("You don't have access to update a task");
+      throw new Forbidden("You don't have access to update a task");
     }
     if (req.user.user_role == "Worker" || req.user.user_role == "Admin") {
       await task.update(req.body, { where: { id } });
@@ -102,7 +103,7 @@ module.exports = {
   },
   deleteTask: async (req, res) => {
     if (!req.user.user_role == "Admin") {
-      throw new Error("Only admins can delete tasks.");
+      throw new Forbidden("Only admins can delete tasks.");
     }
     if (req.user.user_role === "Admin") {
       const task = await Task.findByPk(req.params.id);
@@ -117,7 +118,7 @@ module.exports = {
   },
   deleteImage: async (req, res) => {
     if (!req.user.user_role == "Admin") {
-      throw new Error("Only admins can delete images.");
+      throw new Forbidden("Only admins can delete images.");
     }
     if (req.user.user_role === "Admin") {
       const image = await Task.findByPk(req.params.id);
@@ -135,7 +136,7 @@ module.exports = {
   },
   deleteMsg: async (req, res) => {
     if (!req.user.user_role == "Admin") {
-      throw new Error("Only admins can delete messages.");
+      throw new Forbidden("Only admins can delete messages.");
     }
     if (req.user.user_role === "Admin") {
       const message = await Messages.findByPk(req.params.id);
