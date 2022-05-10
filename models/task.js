@@ -1,6 +1,6 @@
 const db = require("../database/connection");
 const { DataTypes } = require("sequelize");
-const { InvalidUserCredentials, Unauthorized } = require("../errors");
+const { InvalidUserCredentials, Unauthorized } = require("../error");
 
 require("dotenv").config();
 

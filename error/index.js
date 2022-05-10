@@ -57,6 +57,7 @@ module.exports = {
   invalidUserCredentials,
   UserNotFound,
   Forbidden,
+  Unauthorized,
   TokenExpired,
   TaskNotFound,
   MessageNotFound,

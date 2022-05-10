@@ -1,6 +1,6 @@
 const Task = require("../models/task");
 const Messages = require("../models/message");
-const {Forbidden} = require("../error")
+const { Forbidden } = require("../error");
 
 module.exports = {
   get_tasks: async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = {
   },
   create_task: async (req, res) => {
     if (req.user.user_role == "Customer") {
-      throw new Forbidden("You don't have access to create a task.")
+      throw new Forbidden("You don't have access to create a task.");
     }
     if (req.user.user_role == "Admin" || req.user.user_role == "Worker") {
       const task = await Task.create(req.body);
@@ -113,24 +113,6 @@ module.exports = {
       if (task) {
         await Task.destroy({ where: { task_id: req.params.id } });
         res.json("Task got deleted successfully.");
-      }
-    }
-  },
-  deleteImage: async (req, res) => {
-    if (!req.user.user_role == "Admin") {
-      throw new Forbidden("Only admins can delete images.");
-    }
-    if (req.user.user_role === "Admin") {
-      const image = await Task.findByPk(req.params.id);
-      if (!image) {
-        res.json("No image was found");
-      }
-      if (image) {
-        await Task.update(
-          { task_images: null },
-          { where: { task_id: req.params.id } }
-        );
-        res.json("Image got deleted successfully.");
       }
     }
   },

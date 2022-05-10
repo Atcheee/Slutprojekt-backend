@@ -8,17 +8,20 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./images");
+    cb(null, "./public/images");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
   },
 });
+
 const upload = multer({ storage: storage });
 
 const router = new Router();
 
 router.get("/", Auth.user, asyncHandler(taskController.get_tasks));
+
+router.get("/images", Auth.user, asyncHandler(imgController.getTaskImage))
 
 router.get("/:id/messages", Auth.user, asyncHandler(taskController.get_messages));
 
@@ -32,10 +35,9 @@ router.patch("/:id", Auth.user, Validations.updateTask, asyncHandler(taskControl
 
 router.patch("/:id/status", Auth.user, asyncHandler(taskController.update_taskStatus))
 
-router.patch("/:id/images", Auth.admin, asyncHandler(taskController.deleteImage));
+router.patch("/:id/images", Auth.admin, asyncHandler(imgController.deleteImage));
 
 router.delete("/:id", Auth.admin, asyncHandler(taskController.deleteTask));
-
 
 router.delete("/:id/messages", Auth.admin, asyncHandler(taskController.deleteMsg));
 

@@ -1,9 +1,22 @@
 const Task = require("../models/task");
 const path = require("path");
-const { Forbidden } = require("../error");
+const { Forbidden, Unauthorized } = require("../error");
 
 module.exports = {
-  getAllImages: (req, res) => {},
+  getTaskImage: async (req, res) => {
+    if (
+      !req.user.user_role == "Admin" ||
+      !req.user.user_role == "Worker" ||
+      !req.user.user_role == "Worker"
+    ) {
+      throw new Unauthorized();
+    }
+    getImage = await Task.findAll({
+      attributes: ["task_images"],
+      where: { user_id: req.user.user_id },
+    });
+    res.json(getImage);
+  },
   uploadImage: async (req, res) => {
     const { id } = req.params;
     const task = await Task.findByPk(id);

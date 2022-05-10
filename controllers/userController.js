@@ -5,10 +5,13 @@ const {Forbidden} = require("../error")
 module.exports = {
   getAllUsers: async (req, res) => {
     if (req.user.user_role === "Admin" || req.user.user_role === "Worker") {
-      const users = await User.findAll({});
+      const users = await User.findAll({
+        attributes: { exclude: ['user_password'] }
+      });
       res.json(users);
     } else if (req.user.user_role === "Customer") {
-      const user = await User.findOne({ where: { user_id: req.user.user_id } });
+      const user = await User.findOne({ where: { user_id: req.user.user_id },
+        attributes: { exclude: ['user_password'] } });
       res.json(user);
     }
   },
