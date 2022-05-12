@@ -51,13 +51,10 @@ module.exports = {
     const { id } = req.params;
     const task = await Task.findByPk(id);
 
-    if (
-      req.user.user_role == "Customer" &&
-      task.customer_id != req.user.user_id
-    ) {
+    if (req.user.user_role == "Customer" && task.user_id != req.user.user_id) {
       throw new Forbidden("You don't have access to view this page.");
     }
-    if (req.user.user_role == "Worker" && task.worker_id != req.user.user_id) {
+    if (req.user.user_role == "Worker" && task.user_id != req.user.user_id) {
       throw new Forbidden("You don't have access to view this page.");
     }
     const messages = await Messages.findAll({ where: { task_id: id } });
@@ -77,6 +74,9 @@ module.exports = {
         task.user_id != req.user.user_id
       ) {
         throw new Forbidden("You don't have access to create a new msg here.");
+      } else if (task.user_id == req.user.user_id) {
+        const message = await Messages.create({ msg, user_id, task_id: id });
+        res.json("Message successfully created: " + message.msg);
       }
       if (req.user.user_role === "Worker" || req.user.user_role === "Admin") {
         const message = await Messages.create({ msg, user_id, task_id: id });
